@@ -16,7 +16,7 @@ jobs:
         id : setup-python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.11'
+          python-version: '3.13'
 
       - name : Install Poetry
         run : | # 파이프라인 |  여러줄 (multiline) 작성시 사용
@@ -49,7 +49,7 @@ jobs:
         id: setup-python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Install Poetry
         run: |
