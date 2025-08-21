@@ -6,10 +6,11 @@ authors = ["UNGBI78 <mybluewings78@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.13"
 fastapi = {extras = ["standard"], version = "^0.116.1"}
 uvicorn = "^0.35.0"
 orjson = "3.10.12"
+sqids = "0.5.1"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -32,7 +33,7 @@ target-version = "py313"
 
 [tool.mypy]
 plugins = ["pydantic.mypy"]
-python_version = 3.11
+python_version = 3.13
 strict = true
 
 [tool.coverage.run]
