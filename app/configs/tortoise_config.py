@@ -4,7 +4,7 @@ from tortoise.contrib.fastapi import register_tortoise
 
 from app.configs import config
 
-TORTOISE_APP_MODELS = ["app.tortoise_model.meeting", "aerich.model"]
+TORTOISE_APP_MODELS = ["app.tortoise_models.meeting", "aerich.models"]
 
 TORTOISE_ORM = {
     "connections": {
