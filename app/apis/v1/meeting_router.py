@@ -1,18 +1,46 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from starlette.status import HTTP_404_NOT_FOUND
 
 from app.dtos.create_meeting_response import CreateMeetingResponse
-from app.services.meeting_service_mysql import service_create_meeting_mysql
+from app.dtos.get_meeting_response import GetMeetingResponse
+from app.services.meeting_service_mysql import (
+    service_create_meeting_mysql,
+    service_get_meeting_mysql,
+)
 
 edgedb_router = APIRouter(prefix="/v1/edgedb/meetings", tags=["Meeting"])
 mysql_router = APIRouter(prefix="/v1/mysql/meetings", tags=["Meeting"])
 # 원래는 어떤 DB 를 쓰는지 URL 에 적을 필요 없음. 강의용
 
-
-@edgedb_router.post("", description="meeting 생성")
-async def api_create_meeting_edgedb() -> CreateMeetingResponse:
-    return CreateMeetingResponse(url_code="abc")
+# 미사용 edgedb
+# @edgedb_router.post("", description="meeting 생성")
+# async def api_create_meeting_edgedb() -> CreateMeetingResponse:
+#     return CreateMeetingResponse(url_code="abc")
 
 
 @mysql_router.post("", description="meeting 생성2")
 async def api_create_meeting_mysql() -> CreateMeetingResponse:
     return CreateMeetingResponse(url_code=(await service_create_meeting_mysql()).url_code)
+
+
+@edgedb_router.get(
+    "/{meeting_url_code}",
+    description="meeting을 조회합니다.2",
+)
+# 미사용 edgedb
+# async def api_get_meeting_edgedb(meeting_url_code: str) -> GetMeetingResponse:
+#     return GetMeetingResponse(url_code="abc")
+
+
+@mysql_router.get(
+    "/{meeting_url_code}",
+    description="meeting을 조회합니다.",
+)
+async def api_get_meeting_mysql(meeting_url_code: str) -> GetMeetingResponse:
+    meeting = await service_get_meeting_mysql(meeting_url_code)
+    if meeting is None:
+        raise HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail=f"meeting with url_code: {meeting_url_code} not found",
+        )
+    return GetMeetingResponse(url_code=meeting.url_code)
